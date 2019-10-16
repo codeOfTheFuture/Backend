@@ -4,7 +4,8 @@
   "description": "Backend for build week project dad jokes using node.js express.js postgreSQL database jwt authentication",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "server": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
     "knex": "^0.19.5",
     "pg": "^7.12.1",
     "sqlite3": "^4.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
   }
 }
