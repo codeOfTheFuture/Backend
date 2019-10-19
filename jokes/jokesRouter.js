@@ -22,7 +22,6 @@ router.post('/', authorization, async (req, res) => {
       body,
     } = req;
 
-    console.log(body, id);
     const newJoke = {};
 
     newJoke.user_id = String(id);
@@ -34,7 +33,6 @@ router.post('/', authorization, async (req, res) => {
 
     const addedJoke = await Jokes.add(newJoke);
 
-    console.log('added joke', addedJoke);
     res.status(201).json({ joke: addedJoke });
   } catch (error) {
     res.status(400).json({ message: `You did not add a joke`, error });

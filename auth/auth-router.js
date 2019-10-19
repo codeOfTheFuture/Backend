@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const secret = require('../config/secrets');
 
 const Users = require('../user/userModel');
+const Jokes = require('../jokes/jokesModel');
 
 // Register a user
 router.post('/register', async (req, res) => {
@@ -53,22 +54,31 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    // console.log(username, password);
 
     const user = await Users.findBy({ username }).first();
 
     console.log('anything');
-    console.log(user);
+    console.log('>>>>>>>', user);
     if (user && bcrypt.compareSync(password, user.password)) {
       const token = generateToken(user.id);
 
+      const { id } = user;
+
+      const jokes = await Jokes.findByUserId(id);
+
+      console.log('>>>>>>>>????????????', jokes);
+
+      const sendUser = {};
+
+      sendUser.id = user.id;
+      sendUser.username = user.username;
+      sendUser.email = user.email;
+      sendUser.date_created = user.date_created;
+      sendUser.jokes = jokes;
+
+      console.log('sendUser', sendUser);
       res.status(200).json({
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          date_created: user.date_created,
-        },
+        user: sendUser,
         token,
       });
     } else {

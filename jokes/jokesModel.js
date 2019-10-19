@@ -4,6 +4,7 @@ module.exports = {
   add,
   find,
   findById,
+  findByUserId,
 };
 
 async function add(joke) {
@@ -16,6 +17,19 @@ function findById(id) {
   return db('jokes')
     .where({ id })
     .first();
+}
+
+function findByUserId(id) {
+  return db('users')
+    .innerJoin('jokes', 'users.id', 'jokes.user_id')
+    .where({ user_id: id })
+    .select(
+      'jokes.id',
+      'jokes.user_id',
+      'jokes.joke',
+      'jokes.setup',
+      'jokes.delivery',
+    );
 }
 
 function find() {
