@@ -14,11 +14,9 @@ async function add(user) {
 
 function findById(id) {
   return db('users')
-    .select('*')
-    .first()
-    .innerJoin('jokes', 'users.id', 'jokes.user_id')
-    .where({ user_id: id })
-    .select('*');
+    .where({ id })
+    .select('id', 'username', 'email', 'date_created')
+    .first();
 }
 
 function findBy(filter) {
