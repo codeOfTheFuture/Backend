@@ -4,6 +4,7 @@ module.exports = {
   add,
   findById,
   findBy,
+  update,
 };
 
 async function add(user) {
@@ -21,4 +22,13 @@ function findById(id) {
 
 function findBy(filter) {
   return db('users').where(filter);
+}
+
+async function update(changes, id) {
+  return db('users')
+    .where('id', Number(id))
+    .update(changes)
+    .then(() => {
+      return findById(Number(id));
+    });
 }
