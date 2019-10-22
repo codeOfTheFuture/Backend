@@ -53,6 +53,7 @@ router.post('/login', async (req, res) => {
 
       console.log(favorites);
       const sendUser = {};
+      const favorite_jokes = {};
 
       sendUser.id = user.id;
       sendUser.username = user.username;
