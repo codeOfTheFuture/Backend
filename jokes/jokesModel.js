@@ -23,13 +23,7 @@ function findByUserId(id) {
   return db('users')
     .innerJoin('jokes', 'users.id', 'jokes.user_id')
     .where({ user_id: id })
-    .select(
-      'jokes.id',
-      'jokes.user_id',
-      'jokes.joke',
-      'jokes.setup',
-      'jokes.delivery',
-    );
+    .select('jokes.id', 'jokes.user_id', 'jokes.first_line', 'jokes.punchline');
 }
 
 function find() {

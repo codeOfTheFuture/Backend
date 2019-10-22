@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authorization = require('../config/auth');
 const Users = require('../user/userModel');
 const Jokes = require('../jokes/jokesModel');
+const UserFavs = require('../userFavorites/userFavoritesModel');
 
 // Get User By Id
 router.get('/:id', authorization, async (req, res) => {
