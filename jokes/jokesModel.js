@@ -5,6 +5,8 @@ module.exports = {
   find,
   findById,
   findByUserId,
+  update,
+  remove,
 };
 
 async function add(joke) {
@@ -23,15 +25,24 @@ function findByUserId(id) {
   return db('users')
     .innerJoin('jokes', 'users.id', 'jokes.user_id')
     .where({ user_id: id })
-    .select(
-      'jokes.id',
-      'jokes.user_id',
-      'jokes.joke',
-      'jokes.setup',
-      'jokes.delivery',
-    );
+    .select('jokes.id', 'jokes.user_id', 'jokes.first_line', 'jokes.punchline');
 }
 
 function find() {
   return db('jokes').select();
+}
+
+function update(changes, id) {
+  return db('jokes')
+    .where('id', Number(id))
+    .update(changes)
+    .then(() => {
+      return findById(Number(id));
+    });
+}
+
+function remove(id) {
+  return db('jokes')
+    .where('id', Number(id))
+    .del();
 }

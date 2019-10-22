@@ -5,26 +5,11 @@ const secret = require('../config/secrets');
 
 const Users = require('../user/userModel');
 const Jokes = require('../jokes/jokesModel');
+const UserFavorites = require('../userFavorites/userFavoritesModel');
 
 // Register a user
 router.post('/register', async (req, res) => {
-  // Validates if any required user fields are missing and returns a bad request response
-  // validateUser(username).badRequest
-  //   ? validateUser(username).response
-  //   : validateUser(password).badRequest
-  //   ? validateUser(password).response
-  //   : validateUser(email).badRequest
-  //   ? validateUser(email).response
-  //   : validateUser(date_created).badRequest && validateUser(date).response;
-
   try {
-    // const user = {
-    //   username,
-    //   password,
-    //   email,
-    //   date_created,
-    // };
-
     const user = req.body;
 
     const hashPassword = bcrypt.hashSync(user.password, 14);
@@ -57,8 +42,6 @@ router.post('/login', async (req, res) => {
 
     const user = await Users.findBy({ username }).first();
 
-    console.log('anything');
-    console.log('>>>>>>>', user);
     if (user && bcrypt.compareSync(password, user.password)) {
       const token = generateToken(user.id);
 
@@ -66,17 +49,19 @@ router.post('/login', async (req, res) => {
 
       const jokes = await Jokes.findByUserId(id);
 
-      console.log('>>>>>>>>????????????', jokes);
+      const favorites = await UserFavorites.findByUserId(id);
 
+      console.log(favorites);
       const sendUser = {};
+      const favorite_jokes = {};
 
       sendUser.id = user.id;
       sendUser.username = user.username;
       sendUser.email = user.email;
       sendUser.date_created = user.date_created;
       sendUser.jokes = jokes;
+      sendUser.favorites = favorites;
 
-      console.log('sendUser', sendUser);
       res.status(200).json({
         user: sendUser,
         token,

@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const authorization = require('../config/auth');
 
+const Users = require('../user/userModel');
+const Jokes = require('../jokes/jokesModel');
 const UserFavorites = require('./userFavoritesModel');
 
 // Add a joke to a users favorites by joke id
