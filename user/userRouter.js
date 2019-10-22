@@ -2,7 +2,7 @@ const router = require('express').Router();
 const authorization = require('../config/auth');
 const Users = require('../user/userModel');
 const Jokes = require('../jokes/jokesModel');
-const UserFavs = require('../userFavorites/userFavoritesModel');
+const UserFavorites = require('../userFavorites/userFavoritesModel');
 
 // Get User By Id
 router.get('/:id', authorization, async (req, res) => {
@@ -11,10 +11,12 @@ router.get('/:id', authorization, async (req, res) => {
 
     const user = await Users.findById(id);
     const jokes = await Jokes.findByUserId(id);
+    const favorites = await UserFavorites.findByUserId(id);
 
     const sendUser = { ...user };
 
     sendUser.jokes = jokes;
+    sendUser.favorite_jokes = favorites;
 
     user
       ? res.status(200).json(sendUser)
