@@ -8,7 +8,34 @@ router.get('/', async (req, res) => {
   try {
     const jokes = await Jokes.find();
 
-    res.status(200).json(jokes);
+    const sendJokes = jokes.map(joke => {
+      return { ...joke, rating: getRandomInt() };
+    });
+
+    res.status(200).json(sendJokes);
+  } catch (error) {
+    res.status(500).json({ message: `Internal Server Error`, error });
+  }
+});
+
+// Get a joke by id
+router.get('/:id', async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+
+  try {
+    const joke = await Jokes.findById(id);
+
+    if (joke) {
+      const sendJoke = { ...joke, rating: getRandomInt() };
+
+      res.status(200).json(sendJoke);
+    } else {
+      res
+        .status(404)
+        .json({ message: `There is no joke with the id of ${id}` });
+    }
   } catch (error) {
     res.status(500).json({ message: `Internal Server Error`, error });
   }
@@ -32,7 +59,9 @@ router.post('/', authorization, async (req, res) => {
 
     const addedJoke = await Jokes.add(newJoke);
 
-    res.status(201).json({ joke: addedJoke });
+    const sendJoke = { ...addedJoke, rating: getRandomInt() };
+
+    res.status(201).json({ joke: sendJoke });
   } catch (error) {
     res.status(400).json({ message: `You did not add a joke`, error });
   }
@@ -51,8 +80,10 @@ router.put('/:id', authorization, async (req, res) => {
 
     if (joke) {
       const updatedJoke = await Jokes.update(changes, id);
-      console.log(updatedJoke);
-      res.status(200).json(updatedJoke);
+
+      const sendJoke = { ...updatedJoke, rating: getRandomInt() };
+
+      res.status(200).json(sendJoke);
     } else {
       res
         .status(404)
@@ -83,5 +114,9 @@ router.delete('/:id', authorization, async (req, res) => {
     res.status(500).json({ message: `Internal Server Error`, error });
   }
 });
+
+function getRandomInt() {
+  return Math.floor(Math.random() * Math.floor(5));
+}
 
 module.exports = router;
