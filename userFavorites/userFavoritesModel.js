@@ -3,12 +3,11 @@ const db = require('../data/dbConfig');
 module.exports = {
   add,
   findById,
-  find,
   findByUserId,
+  remove,
 };
 
 async function add(favJoke) {
-  console.log('>>>>>', favJoke);
   const [id] = await db('userFavorites').insert(favJoke);
 
   return findById(id);
@@ -32,4 +31,9 @@ function findByUserId(id) {
     );
 }
 
-function find() {}
+function remove(favId) {
+  console.log(favId);
+  return db('userFavorites')
+    .where('id', Number(favId))
+    .del();
+}

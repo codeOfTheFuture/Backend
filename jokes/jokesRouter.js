@@ -104,10 +104,10 @@ router.delete('/:id', authorization, async (req, res) => {
     const deleted = await Jokes.remove(id);
 
     if (deleted) {
-      res.status(200).json({ message: `Removed ${deleted}` });
+      res.status(200).json({ message: `Deleted Joke ${deleted}` });
     } else {
       res.status(404).json({
-        message: `Could not find the joke with the id of ${deleted}`,
+        message: `Could not find the joke with the id of ${id}`,
       });
     }
   } catch (error) {
@@ -116,7 +116,7 @@ router.delete('/:id', authorization, async (req, res) => {
 });
 
 function getRandomInt() {
-  return Math.floor(Math.random() * Math.floor(5));
+  return Math.floor(Math.random() * (6 - 3) + 3);
 }
 
 module.exports = router;
