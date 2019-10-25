@@ -48,6 +48,7 @@ function update(changes, id) {
 }
 
 function remove(id) {
+  console.log('model id', id);
   return db('jokes')
     .where('id', Number(id))
     .del();

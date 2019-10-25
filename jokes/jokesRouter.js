@@ -105,6 +105,7 @@ router.delete('/:id', authorization, async (req, res) => {
     const deleted = await Jokes.remove(id);
 
     if (deleted) {
+      console.log(deleted);
       res.status(200).json({ message: `Deleted Joke ${deleted}` });
     } else {
       res.status(404).json({
