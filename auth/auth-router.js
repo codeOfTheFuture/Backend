@@ -51,21 +51,34 @@ router.post('/login', async (req, res) => {
 
       const favorites = await UserFavorites.findByUserId(id);
 
-      console.log(favorites);
-      const sendUser = {};
-      const favorite_jokes = {};
+      const sendFavorites = favorites.map(async fav => {
+        const joke = await Jokes.findById(fav.joke_id);
+        const user = await Users.findById(joke.user_id);
 
-      sendUser.id = user.id;
-      sendUser.username = user.username;
-      sendUser.email = user.email;
-      sendUser.date_created = user.date_created;
-      sendUser.jokes = jokes;
-      sendUser.favorites = favorites;
-
-      res.status(200).json({
-        user: sendUser,
-        token,
+        return {
+          ...fav,
+          usernameOfJoke: user.username,
+          first_line: joke.first_line,
+          punchline: joke.punchline,
+        };
       });
+
+      Promise.all(sendFavorites).then(favorites => {
+        const sendUser = {};
+
+        sendUser.id = user.id;
+        sendUser.username = user.username;
+        sendUser.email = user.email;
+        sendUser.date_created = user.date_created;
+        sendUser.jokes = jokes;
+        sendUser.favorites = favorites;
+
+        res.status(200).json({
+          user: sendUser,
+          token,
+        });
+      });
+      console.log(favorites);
     } else {
       res.status(401).json({ message: 'Invalid Credentials' });
     }
