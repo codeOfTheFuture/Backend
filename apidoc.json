@@ -1,0 +1,7 @@
+{
+  "name": "Dad Jokes",
+  "version": "1.0.0",
+  "description": "API Documentation for Dad Jokes Backend API using node.js, express.js, knex.js, and sqlite3",
+  "title": "API Docs - Dad Jokes",
+  "url": "git+https://github.com/Build-Week-PT-Dad-Jokes/Backend.git"
+}

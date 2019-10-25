@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "api-docs": "apidoc -f .js -i ./user -i ./jokes -i ./userFavorites -o apidoc/",
+    "build-docs": "apidoc-markdown -p ./apidoc/ -o README.md",
+    "build-api": "npm-run-all api-docs build-docs"
   },
   "repository": {
     "type": "git",

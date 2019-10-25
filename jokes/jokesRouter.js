@@ -54,6 +54,7 @@ router.post('/', authorization, async (req, res) => {
     newJoke.user_id = String(id);
     newJoke.first_line = body.first_line;
     newJoke.punchline = body.punchline;
+    newJoke.private = body.private;
 
     console.log(newJoke);
 
